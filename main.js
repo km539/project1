@@ -1,6 +1,3 @@
-//get board info
-//const board = document.querySelector(".component");
-
 
 let osero = ['○', '●'];
 
@@ -28,10 +25,29 @@ for (let i = 0; i < htmlBoard.length; i++) {
         
         //特定の要素がクリックされたら
         select_cell.addEventListener("click", function (e) {
-            //console.log(select_cell);
+
             // console.log(e.target);
-            if(select_cell === ''){
-                console.log(select_cell);
+            if(board[i][j] === 0){
+                //console.log(select_cell);
+                if(!turn){ //白のターンなら１
+                    board[i][j] = 1;
+                }else{ //黒のターンなら２
+                    board[i][j] = 2;
+                }
+                const count = checkReverse(i,j)
+
+                //周りにひっくりかえせる石があったら
+                if(count > 0){
+                    turn = !turn;
+                    checkTurn();
+                    boardSet();
+                }else{
+                    //error
+                    board[i][j] = 0;
+                    console.log("cannot put your stone");
+                    console.log(board);
+                }
+               
             }
         });
 
@@ -39,8 +55,235 @@ for (let i = 0; i < htmlBoard.length; i++) {
     }
 }
 
+function checkReverse(i,j){
+    let counter = 0;
 
+    let target = board[i][j];
+    //console.log(target);
 
+    //周りを確認する
+    counter = counter + turnRight(i,j);
+    counter = counter + turnLeft(i,j);
+    counter = counter + turnUp(i,j);
+    counter = counter + turnDown(i,j);
+    //console.log(counter);
+    //console.log('-----------');
+    counter = counter + turnRightDown(i,j);
+    counter = counter + turnLeftUp(i,j);
+
+    counter = counter + turnLeftDown(i,j);
+    counter = counter + turnRightUp(i,j);
+
+    //console.log(counter);
+    return counter;
+}
+function turnUp(row,col){
+    let num = 0;
+    let next = board[row-1][col]
+
+    if(board[row][col] !== next && board[row][col] !== 0 && next !== 0){
+        //console.log(next);
+
+        for (let i = row-2; i > 0; i--) {
+            //console.log(board[i][col]);
+           if(board[i][col] === 0){
+               break;
+           }else if(board[i][col] === board[row][col]){
+               for(let j = row-1;j>i-1;j--){
+                   board[j][col] = board[row][col];
+                   console.log("turn up");
+                   num++;
+               }
+           }else{
+
+           }
+        }
+        return num;
+    }
+}
+
+function turnDown(row,col){
+    let num = 0;
+    let next = board[row+1][col]
+
+    if(board[row][col] !== next && board[row][col] !== 0 && next !== 0){
+        //console.log(next);
+
+        for (let i = row+2; i < board.length; i++) {
+            //console.log(board[i][col]);
+           if(board[i][col] === 0){
+               break;
+           }else if(board[i][col] === board[row][col]){
+               for(let j = row+1;j<i+1;j++){
+                   board[j][col] = board[row][col];
+                   console.log("turn down");
+                   num++;
+               }
+           }else{
+
+           }
+        }
+    }
+    return num;
+}
+
+function turnRight(row,col){
+    let num = 0;
+    let next = board[row][col+1];
+
+    if(board[row][col] !== next && board[row][col] !== 0 && next !== 0){
+        //console.log(next);
+
+        for (let i = col+2; i < board.length; i++) {
+            //console.log(board[row][i]);
+           if(board[row][i] === 0){
+               break;
+           }else if(board[row][i] === board[row][col]){
+               for(let j = col+1;j<i+1;j++){
+                   board[row][j] = board[row][col];
+                   console.log("turn right");
+                   num++;
+               }
+           }else{
+
+           }
+        }
+    }
+    return num;
+}
+
+function turnLeft(row,col){
+    let num = 0;
+    let next = board[row][col-1]
+
+    if(board[row][col] !== next && board[row][col] !== 0 && next !== 0){
+        //console.log(next);
+
+        for (let i = col-2; i > 0; i--) {
+            //console.log(board[row][i]);
+           if(board[row][i] === 0){
+               break;
+           }else if(board[row][i] === board[row][col]){
+               for(let j = col-1;j>i-1;j--){
+                   board[row][j] = board[row][col];
+                   console.log("turn left");
+                   num++;
+               }
+           }else{
+
+           }
+        }
+    }
+    return num;
+}
+
+function turnRightDown(row,col){
+    let num = 0;
+    let next = board[row+1][col+1]
+    //console.log(next);
+
+    if(board[row][col] !== next && board[row][col] !== 0){
+        //console.log(next);
+
+        for (let i = row+2, ii = col+2 ; i < board.length,  ii < board.length; i++ ,ii++) {
+            //console.log(board[i][ii]);
+           if(board[i][ii] === 0){
+               break;
+           }else if(board[i][ii] === board[row][col]){
+               for(let j = row+1, jj = col+1;j<i+1, jj<ii+1;j++, jj++){
+                   board[j][jj] = board[row][col];
+                   console.log("turn right down");
+                   num++;
+                   
+               }
+           }else{
+
+           }
+        }
+    }
+    return num;
+}
+
+function turnLeftUp(row,col){
+    let num = 0;
+    let next = board[row-1][col-1]
+    //console.log(next);
+
+    if(board[row][col] !== next && board[row][col] !== 0){
+        //console.log(next);
+
+        for (let i = row-2, ii = col-2 ; i > 0,  ii > 0; i-- ,ii--) {
+            //console.log(board[i][ii]);
+           if(board[i][ii] === 0){
+               break;
+           }else if(board[i][ii] === board[row][col]){
+               for(let j = row-1, jj = col-1;j>i-1, jj>ii-1;j--, jj--){
+                   board[j][jj] = board[row][col];
+                   console.log("turn left up");
+                   num++;
+                   
+               }
+           }else{
+
+           }
+        }
+    }
+    return num;
+}
+
+function turnLeftDown(row,col){
+    let num = 0;
+    let next = board[row+1][col-1]
+    //console.log(next);
+
+    if(board[row][col] !== next && board[row][col] !== 0){
+        //console.log(next);
+
+        for (let i = row+2, ii = col-2 ; i < board.length,  ii > 0; i++ ,ii--) {
+            //console.log(board[i][ii]);
+           if(board[i][ii] === 0){
+               break;
+           }else if(board[i][ii] === board[row][col]){
+               for(let j = row+1, jj = col-1;j<i+1, jj>ii-1;j++, jj--){
+                   board[j][jj] = board[row][col];
+                   console.log("turn left down");
+                   num++;
+                   
+               }
+           }else{
+
+           }
+        }
+    }
+    return num;
+}
+
+function turnRightUp(row,col){
+    let num = 0;
+    let next = board[row-1][col+1]
+    //console.log(next);
+
+    if(board[row][col] !== next && board[row][col] !== 0){
+        //console.log(next);
+
+        for (let i = row-2, ii = col+2 ; ii < board.length,  i > 0; ii++ ,i--) {
+            //console.log(board[i][ii]);
+           if(board[i][ii] === 0){
+               break;
+           }else if(board[i][ii] === board[row][col]){
+               for(let j = row-1, jj = col+1;jj<i+1, j>ii-1;jj++, j--){
+                   board[j][jj] = board[row][col];
+                   console.log("turn right up");
+                   num++;
+                   
+               }
+           }else{
+
+           }
+        }
+    }
+    return num;
+}
 //reset button
 function startGame() {
     //console.log("started");
@@ -99,7 +342,3 @@ function hint() {
     console.log("hint!");
 }
 
-//おけるスペースか確認
-function iffreespace() {
-    consolek.log("space");
-}

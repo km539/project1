@@ -15,17 +15,14 @@
     height: auto;
     
 }
-#board .component .row{
-    display: flex;
-}
-
-#board .component .row .tile{
+.board tr td{
     border: 1px solid black;
     width: 50px;
     height: 50px;
     text-align: center;
     font-size: 35px;
 }
+
 #buttons{
     text-align: center;
 }

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<h1>This is Board Game.</h1>
+
+<h3>次のターンは:<p id="turn"></p>
+</h3>
+<section id="board">
+
+    <div class="component">
+    <!--Row 0-->
+   <div class="row" id="row0">
+    <div class="tile" id="column-0"> </div>
+    <div class="tile" id="column-1"> </div>
+    <div class="tile" id="column-2"> </div>
+    <div class="tile" id="column-3"> </div>
+    <div class="tile" id="column-4"> </div>
+    <div class="tile" id="column-5"> </div>
+    <div class="tile" id="column-6"> </div>
+    <div class="tile" id="column-7"> </div>
+   </div>
+
+   <!--Row 1-->
+   <div class="row" id="row1">
+    <div class="tile" id="column-0"> </div>
+    <div class="tile" id="column-1"> </div>
+    <div class="tile" id="column-2"> </div>
+    <div class="tile" id="column-3"> </div>
+    <div class="tile" id="column-4"> </div>
+    <div class="tile" id="column-5"> </div>
+    <div class="tile" id="column-6"> </div>
+    <div class="tile" id="column-7"> </div>
+   </div>
+
+   <!--Row 2-->
+   <div class="row" id="row2">
+    <div class="tile" id="column-0"> </div>
+    <div class="tile" id="column-1"> </div>
+    <div class="tile" id="column-2"> </div>
+    <div class="tile" id="column-3"> </div>
+    <div class="tile" id="column-4"> </div>
+    <div class="tile" id="column-5"> </div>
+    <div class="tile" id="column-6"> </div>
+    <div class="tile" id="column-7"> </div>
+   </div>
+
+   <!--Row 3-->
+   <div class="row" id="row3">
+    <div class="tile" id="column0"> </div>
+    <div class="tile" id="column1"> </div>
+    <div class="tile" id="column2"> </div>
+    <div class="tile" id="r3c3"> </div>
+    <div class="tile" id="r3c4"> </div>
+    <div class="tile" id="column5"> </div>
+    <div class="tile" id="column6"> </div>
+    <div class="tile" id="column7"> </div>
+   </div>
+
+   <!--Row 4-->
+   <div class="row" id="row4">
+    <div class="tile" id="column-0" onclick="iffreespace()"> </div>
+    <div class="tile" id="column-1"> </div>
+    <div class="tile" id="column-2"> </div>
+    <div class="tile" id="r4c3"> </div>
+    <div class="tile" id="r4c4"> </div>
+    <div class="tile" id="column-5"> </div>
+    <div class="tile" id="column-6"> </div>
+    <div class="tile" id="column-7"> </div>
+   </div>
+
+   <!--Row 5-->
+   <div class="row" id="row5">
+    <div class="tile" id="column-0"> </div>
+    <div class="tile" id="column-1"> </div>
+    <div class="tile" id="column-2"> </div>
+    <div class="tile" id="column-3"> </div>
+    <div class="tile" id="column-4"> </div>
+    <div class="tile" id="column-5"> </div>
+    <div class="tile" id="column-6"> </div>
+    <div class="tile" id="column-7"> </div>
+   </div>
+
+   <!--Row 6-->
+   <div class="row" id="row6">
+    <div class="tile" id="column-0"> </div>
+    <div class="tile" id="column-1"> </div>
+    <div class="tile" id="column-2"> </div>
+    <div class="tile" id="column-3"> </div>
+    <div class="tile" id="column-4"> </div>
+    <div class="tile" id="column-5"> </div>
+    <div class="tile" id="column-6"> </div>
+    <div class="tile" id="column-7"> </div>
+   </div>
+
+   <!--Row 7-->
+   <div class="row" id="row7">
+    <div class="tile" id="column-0"> </div>
+    <div class="tile" id="column-1"> </div>
+    <div class="tile" id="column-2"> </div>
+    <div class="tile" id="column-3"> </div>
+    <div class="tile" id="column-4"> </div>
+    <div class="tile" id="column-5"> </div>
+    <div class="tile" id="column-6"> </div>
+    <div class="tile" id="column-7"> </div>
+   </div>
+
+   </div>
+</section>
+
+<section id="buttons">
+    <button onclick="startGame()">reset</button>
+     <button onclick="hint()">hint</button>
+</section>
+
+
+<script src="main.js"></script>
+</body>
+</html>

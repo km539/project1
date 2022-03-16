@@ -337,7 +337,7 @@ function startGame() {
             board[i][j] = 0;
 
             //勝利判定の実験
-            board[i][j] =  1;
+            //board[i][j] =  1;
         }
     }
 

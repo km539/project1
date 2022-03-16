@@ -1,6 +1,4 @@
 
-let osero = ['○', '●'];
-
 //ターン確認用
 let turn = true;
 
@@ -23,7 +21,7 @@ for (let i = 0; i < htmlBoard.length; i++) {
     for (let j = 0; j < htmlBoard.length; j++) {
         const select_cell = htmlBoard[i].cells[j];
         
-        //特定の要素がクリックされたら
+        //特定の要素がクリックされた時の処理
         select_cell.addEventListener("click", function (e) {
 
             // console.log(e.target);
@@ -41,6 +39,7 @@ for (let i = 0; i < htmlBoard.length; i++) {
                     turn = !turn;
                     checkTurn();
                     boardSet();
+                    //console.log(board);
                 }else{
                     //error
                     board[i][j] = 0;
@@ -51,25 +50,32 @@ for (let i = 0; i < htmlBoard.length; i++) {
             }
         });
 
-
     }
 }
 
 function checkReverse(i,j){
     let counter = 0;
+    //console.log(counter);
 
-    let target = board[i][j];
+    //let target = board[i][j];
     //console.log(target);
 
     //周りを確認する
+    //console.log(counter);
     counter = counter + turnRight(i,j);
+    //console.log(counter);
     counter = counter + turnLeft(i,j);
+    //console.log(counter);
+    //console.log('!!!');
     counter = counter + turnUp(i,j);
+    //console.log(counter);
     counter = counter + turnDown(i,j);
     //console.log(counter);
     //console.log('-----------');
     counter = counter + turnRightDown(i,j);
+    //console.log(counter);
     counter = counter + turnLeftUp(i,j);
+    //console.log(counter);
 
     counter = counter + turnLeftDown(i,j);
     counter = counter + turnRightUp(i,j);
@@ -79,7 +85,12 @@ function checkReverse(i,j){
 }
 function turnUp(row,col){
     let num = 0;
-    let next = board[row-1][col]
+    let next = 0;
+    if(row !== 0){
+        next = board[row-1][col];
+    }else{
+        return num;
+    }
 
     if(board[row][col] !== next && board[row][col] !== 0 && next !== 0){
         //console.log(next);
@@ -98,13 +109,21 @@ function turnUp(row,col){
 
            }
         }
-        return num;
+        /* console.log("turn up num");
+    console.log(num);
+    console.log("--------------"); */
     }
+    return num;
 }
 
 function turnDown(row,col){
-    let num = 0;
-    let next = board[row+1][col]
+    let num = 0; 
+    let next = 0;
+    if(row !== board.length-1){
+        next = board[row+1][col];
+    }else{
+        return num;
+    }
 
     if(board[row][col] !== next && board[row][col] !== 0 && next !== 0){
         //console.log(next);
@@ -124,6 +143,9 @@ function turnDown(row,col){
            }
         }
     }
+    /*console.log("turn down num");
+    console.log(num);
+    console.log("--------------"); */
     return num;
 }
 
@@ -179,10 +201,15 @@ function turnLeft(row,col){
 
 function turnRightDown(row,col){
     let num = 0;
-    let next = board[row+1][col+1]
+    let next = 0;
+    if(row !== board.length-1){
+        next = board[row+1][col+1];
+    }else{
+        return num;
+    }
     //console.log(next);
 
-    if(board[row][col] !== next && board[row][col] !== 0){
+    if(board[row][col] !== next && board[row][col] !== 0 && next !== 0){
         //console.log(next);
 
         for (let i = row+2, ii = col+2 ; i < board.length,  ii < board.length; i++ ,ii++) {
@@ -206,10 +233,15 @@ function turnRightDown(row,col){
 
 function turnLeftUp(row,col){
     let num = 0;
-    let next = board[row-1][col-1]
+    let next = 0;
+    if(row !== 0){
+        next = board[row-1][col-1];
+    }else{
+        return num;
+    }
     //console.log(next);
 
-    if(board[row][col] !== next && board[row][col] !== 0){
+    if(board[row][col] !== next && board[row][col] !== 0 && next !== 0){
         //console.log(next);
 
         for (let i = row-2, ii = col-2 ; i > 0,  ii > 0; i-- ,ii--) {
@@ -233,14 +265,19 @@ function turnLeftUp(row,col){
 
 function turnLeftDown(row,col){
     let num = 0;
-    let next = board[row+1][col-1]
+    let next = 0;
+    if(row !== board.length-1){
+        next = board[row+1][col-1];
+    }else{
+        return num;
+    }
     //console.log(next);
 
-    if(board[row][col] !== next && board[row][col] !== 0){
+    if(board[row][col] !== next && board[row][col] !== 0 && next !== 0){
         //console.log(next);
 
         for (let i = row+2, ii = col-2 ; i < board.length,  ii > 0; i++ ,ii--) {
-            //console.log(board[i][ii]);
+            console.log(board[i][ii]);
            if(board[i][ii] === 0){
                break;
            }else if(board[i][ii] === board[row][col]){
@@ -260,10 +297,16 @@ function turnLeftDown(row,col){
 
 function turnRightUp(row,col){
     let num = 0;
-    let next = board[row-1][col+1]
+    let next = 0;
+    if(row !== 0){
+        next = board[row-1][col+1];
+    }else{
+        return num;
+    }
+    
     //console.log(next);
 
-    if(board[row][col] !== next && board[row][col] !== 0){
+    if(board[row][col] !== next && board[row][col] !== 0 && next !== 0){
         //console.log(next);
 
         for (let i = row-2, ii = col+2 ; ii < board.length,  i > 0; ii++ ,i--) {
@@ -284,13 +327,17 @@ function turnRightUp(row,col){
     }
     return num;
 }
-//reset button
+
+//Start button
 function startGame() {
     //console.log("started");
     //set 0 for all elements 
     for (let i = 0; i < board.length; i++) {
         for (let j = 0; j < board[i].length; j++) {
             board[i][j] = 0;
+
+            //勝利判定の実験
+            board[i][j] =  1;
         }
     }
 
@@ -319,16 +366,20 @@ function boardSet() {
     //ckeck board elements
     //
 
+    let black_counter = 0;
+    let white_counter = 0;
     for (let i = 0; i < board.length; i++) {
         for (let j = 0; j < board[i].length; j++) {
             switch (board[i][j]) {
                 case 1:
                     //console.log('white');
                     htmlBoard[i].cells[j].innerText = "○"
+                    white_counter++;
                     break;
                 case 2:
                     //console.log('black');
                     htmlBoard[i].cells[j].innerText = "●"
+                    black_counter++;
                     break;
                 case 0:
                     htmlBoard[i].cells[j].innerText = ""
@@ -336,8 +387,38 @@ function boardSet() {
             }
         }
     }
+    //黒と白の数を表示する
+    let black = document.getElementById("black");
+    let white = document.getElementById("white");
+
+    let total = black_counter + white_counter;
+    
+    //黒が一つもなかったら
+    if(black_counter === 0){
+        alert("白の勝ち！");
+
+    //白が一つもなかったら
+    }else if(white_counter === 0){
+        alert("黒の勝ち！");
+
+    //置く場所がなかったら
+    }else if(total >= 64){
+
+        //数が多いほうの勝ち
+        if(black_counter > white_counter){
+            alert("黒の勝ち！");
+        }else{
+            alert("白の勝ち！");
+        }
+    }else{
+
+    }
+    black.innerHTML = black_counter;
+    //console.log(black_counter);
+    white.innerHTML = white_counter;
+    //console.log(white_counter);
 }
-//hint button
+//Hint button
 function hint() {
     console.log("hint!");
 }

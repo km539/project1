@@ -1,130 +1,134 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
-<h1>This is Board Game.</h1>
+    <div class="title">
+        <h1>This is Board Game.</h1>
 
-<h3>次のターン:<p id="turn"></p></h3>
+        <h3>次のターン : <span id="turn"></span></h3>
+        <h2>黒 : <span id="black"> </span> 白 : <span id="white"> </span></h2>
+    </div>
 
-<h2>黒:<p id="black"></p>白:<p id="white"></p></h2>
+    <section id="board">
 
-<section id="board">
+        <div class="component">
 
-    <div class="component">
-    
-    <table class="board" id="boardinfo">
+            <table class="board" id="boardinfo">
 
-        <!-- row 0-->
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
+                <!-- row 0-->
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
 
-        <!-- row 1 -->
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
+                <!-- row 1 -->
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
 
-        <!-- row 2 -->
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
+                <!-- row 2 -->
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
 
-        <!-- row 3 -->
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
+                <!-- row 3 -->
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
 
-        <!-- row 4 -->
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
+                <!-- row 4 -->
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
 
-    <!-- row 5 -->
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
+                <!-- row 5 -->
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
 
-        <!-- row 6-->
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
+                <!-- row 6-->
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
 
-        <!-- row 7 -->
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-
-        
-    </table>
-
-   </div>
-</section>
-
-<section id="buttons">
-    <button onclick="startGame()">Start</button>
-     <button onclick="hint()">Hint</button>
-</section>
+                <!-- row 7 -->
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
 
 
-<script src="main.js"></script>
+            </table>
+
+        </div>
+    </section>
+
+    <section id="buttons">
+        <button onclick="startGame()" class="startButton">Start</button>
+        <button onclick="hint()" class="hintButton">Hint</button>
+    </section>
+
+
+    <script src="main.js"></script>
 </body>
+
 </html>

@@ -1,6 +1,10 @@
-
 //ターン確認用
 let turn = true;
+
+//空の要素
+let Empty = 0;
+let White = 1;
+let Black = 2;
 
 //2dボード作成
 //要素確認用
@@ -8,52 +12,53 @@ let board = new Array(8);
 for (let i = 0; i < board.length; i++) {
     board[i] = new Array(8);
 }
-//console.log(board);
 
+//ページ表示用ボードをhtmlのテーブルから取得
 let htmlBoard = document.querySelectorAll("#boardinfo tr");
-//console.log(htmlBoard);
 // const // constant immutable 
 // let // mutable 
 
 
-//ボードをクリックしたらそこの位置をScript側で要素を取得
+//クリックされた位置をScript側でその要素を取得
 for (let i = 0; i < htmlBoard.length; i++) {
     for (let j = 0; j < htmlBoard.length; j++) {
         const select_cell = htmlBoard[i].cells[j];
-        
+
         //特定の要素がクリックされた時の処理
         select_cell.addEventListener("click", function (e) {
 
-            // console.log(e.target);
-            if(board[i][j] === 0){
+            if (board[i][j] === 0) {
                 //console.log(select_cell);
-                if(!turn){ //白のターンなら１
-                    board[i][j] = 1;
-                }else{ //黒のターンなら２
-                    board[i][j] = 2;
+                if (!turn) {
+                    board[i][j] = White;
+                } else {
+                    board[i][j] = Black;
                 }
-                const count = checkReverse(i,j)
+                const count = Reverse(i, j);
+                //要素情報と一緒にReverse()を実行
 
                 //周りにひっくりかえせる石があったら
-                if(count > 0){
+                if (count > 0) {
                     turn = !turn;
                     checkTurn();
                     boardSet();
                     //console.log(board);
-                }else{
+                    console.log("next turn --");
+                } else {
                     //error
                     board[i][j] = 0;
-                    console.log("cannot put your stone");
-                    console.log(board);
+                    alert("その場所には打つことができません。");
+                    //console.log("cannot put your stone");
+                    //console.log(board);
                 }
-               
+
             }
         });
 
     }
 }
 
-function checkReverse(i,j){
+function Reverse(i, j) {
     let counter = 0;
     //console.log(counter);
 
@@ -62,267 +67,267 @@ function checkReverse(i,j){
 
     //周りを確認する
     //console.log(counter);
-    counter = counter + turnRight(i,j);
+    counter = counter + turnRight(i, j);
     //console.log(counter);
-    counter = counter + turnLeft(i,j);
+    counter = counter + turnLeft(i, j);
     //console.log(counter);
     //console.log('!!!');
-    counter = counter + turnUp(i,j);
+    counter = counter + turnUp(i, j);
     //console.log(counter);
-    counter = counter + turnDown(i,j);
+    counter = counter + turnDown(i, j);
     //console.log(counter);
     //console.log('-----------');
-    counter = counter + turnRightDown(i,j);
+    counter = counter + turnRightDown(i, j);
     //console.log(counter);
-    counter = counter + turnLeftUp(i,j);
+    counter = counter + turnLeftUp(i, j);
     //console.log(counter);
 
-    counter = counter + turnLeftDown(i,j);
-    counter = counter + turnRightUp(i,j);
+    counter = counter + turnLeftDown(i, j);
+    counter = counter + turnRightUp(i, j);
 
-    //console.log(counter);
     return counter;
 }
-function turnUp(row,col){
+function turnUp(row, col) {
     let num = 0;
-    let next = 0;
-    if(row !== 0){
-        next = board[row-1][col];
-    }else{
+    let NextElement = 0;
+    let PlaceColor = board[row][col];
+    let top = 0;
+    if (row !== top) {
+        NextElement = board[row - 1][col];
+    } else {
         return num;
     }
 
-    if(board[row][col] !== next && board[row][col] !== 0 && next !== 0){
-        //console.log(next);
+    //隣の要素が同じ、または要素なしかを確認
+    if (PlaceColor !== NextElement && NextElement !== Empty) {
 
-        for (let i = row-2; i > 0; i--) {
+        //2個隣の要素確認
+        for (let i = row - 2; i > 0; i--) {
             //console.log(board[i][col]);
-           if(board[i][col] === 0){
-               break;
-           }else if(board[i][col] === board[row][col]){
-               for(let j = row-1;j>i-1;j--){
-                   board[j][col] = board[row][col];
-                   console.log("turn up");
-                   num++;
-               }
-           }else{
-
-           }
+            if (board[i][col] === Empty) {
+                break;
+            }
+            if (board[i][col] === PlaceColor) {
+                for (let j = row - 1; j > i - 1; j--) {
+                    board[j][col] = PlaceColor;
+                    console.log("turn up");
+                    num++;
+                }
+                break;
+            }
         }
-        /* console.log("turn up num");
-    console.log(num);
-    console.log("--------------"); */
     }
     return num;
 }
 
-function turnDown(row,col){
-    let num = 0; 
-    let next = 0;
-    if(row !== board.length-1){
-        next = board[row+1][col];
-    }else{
+function turnDown(row, col) {
+    let num = 0;
+    let NextElement = 0;
+    let PlaceColor = board[row][col];
+    let Bottom = board.length - 1
+
+    if (row !== Bottom) {
+        NextElement = board[row + 1][col];
+    } else {
         return num;
     }
 
-    if(board[row][col] !== next && board[row][col] !== 0 && next !== 0){
-        //console.log(next);
+    if (PlaceColor !== NextElement && NextElement !== Empty) {
 
-        for (let i = row+2; i < board.length; i++) {
+        for (let i = row + 2; i < board.length; i++) {
             //console.log(board[i][col]);
-           if(board[i][col] === 0){
-               break;
-           }else if(board[i][col] === board[row][col]){
-               for(let j = row+1;j<i+1;j++){
-                   board[j][col] = board[row][col];
-                   console.log("turn down");
-                   num++;
-               }
-           }else{
-
-           }
+            if (board[i][col] === Empty) {
+                break;
+            }
+            if (board[i][col] === PlaceColor) {
+                for (let j = row + 1; j < i + 1; j++) {
+                    board[j][col] = PlaceColor;
+                    console.log("turn down");
+                    num++;
+                }
+                break;
+            }
         }
     }
-    /*console.log("turn down num");
-    console.log(num);
-    console.log("--------------"); */
     return num;
 }
 
-function turnRight(row,col){
+function turnRight(row, col) {
     let num = 0;
-    let next = board[row][col+1];
+    let rightSideNextElement = board[row][col + 1];
+    let PlaceColor = board[row][col];
 
-    if(board[row][col] !== next && board[row][col] !== 0 && next !== 0){
-        //console.log(next);
+    if (PlaceColor !== rightSideNextElement && rightSideNextElement !== Empty) {
 
-        for (let i = col+2; i < board.length; i++) {
+        for (let i = col + 2; i < board.length; i++) {
+            //console.log(board.length);
+            if (board[row][i] === Empty) {
+                break;
+            }
+            if (board[row][i] === PlaceColor) {
+                for (let j = col + 1; j < i + 1; j++) {
+                    board[row][j] = PlaceColor;
+                    console.log("turn right");
+                    num++;
+                }
+                break;
+            }
+        }
+    }
+    return num;
+}
+
+function turnLeft(row, col) {
+    let num = 0;
+    let leftSideNextElement = board[row][col - 1];
+    let PlaceColor = board[row][col];
+
+    if (PlaceColor !== leftSideNextElement && leftSideNextElement !== Empty) {
+
+        for (let i = col - 2; i >= 0; i--) {
             //console.log(board[row][i]);
-           if(board[row][i] === 0){
-               break;
-           }else if(board[row][i] === board[row][col]){
-               for(let j = col+1;j<i+1;j++){
-                   board[row][j] = board[row][col];
-                   console.log("turn right");
-                   num++;
-               }
-           }else{
-
-           }
+            if (board[row][i] === Empty) {
+                break;
+            }
+            if (board[row][i] === PlaceColor) {
+                for (let j = col - 1; j > i - 1; j--) {
+                    board[row][j] = PlaceColor;
+                    console.log("turn left");
+                    num++;
+                }
+                break;
+            }
         }
     }
     return num;
 }
 
-function turnLeft(row,col){
-    let num = 0;
-    let next = board[row][col-1]
-
-    if(board[row][col] !== next && board[row][col] !== 0 && next !== 0){
-        //console.log(next);
-
-        for (let i = col-2; i > 0; i--) {
-            //console.log(board[row][i]);
-           if(board[row][i] === 0){
-               break;
-           }else if(board[row][i] === board[row][col]){
-               for(let j = col-1;j>i-1;j--){
-                   board[row][j] = board[row][col];
-                   console.log("turn left");
-                   num++;
-               }
-           }else{
-
-           }
-        }
-    }
-    return num;
-}
-
-function turnRightDown(row,col){
+function turnRightDown(row, col) {
     let num = 0;
     let next = 0;
-    if(row !== board.length-1){
-        next = board[row+1][col+1];
-    }else{
+    let PlaceColor = board[row][col];
+    if (row !== board.length - 1 && row !== board.length - 2) {
+        next = board[row + 1][col + 1];
+    } else {
         return num;
     }
-    //console.log(next);
 
-    if(board[row][col] !== next && board[row][col] !== 0 && next !== 0){
+    if (PlaceColor !== next && next !== Empty) {
         //console.log(next);
 
-        for (let i = row+2, ii = col+2 ; i < board.length,  ii < board.length; i++ ,ii++) {
+        for (let i = row + 2, ii = col + 2; i < board.length, ii < board.length; i++, ii++) {
             //console.log(board[i][ii]);
-           if(board[i][ii] === 0){
-               break;
-           }else if(board[i][ii] === board[row][col]){
-               for(let j = row+1, jj = col+1;j<i+1, jj<ii+1;j++, jj++){
-                   board[j][jj] = board[row][col];
-                   console.log("turn right down");
-                   num++;
-                   
-               }
-           }else{
+            if (board[i][ii] === Empty) {
+                break;
+            }
+            if (board[i][ii] === PlaceColor) {
+                for (let j = row + 1, jj = col + 1; j < i + 1, jj < ii + 1; j++, jj++) {
+                    board[j][jj] = PlaceColor;
+                    console.log("turn right down");
+                    num++;
 
-           }
+                }
+                break;
+            }
         }
     }
     return num;
 }
 
-function turnLeftUp(row,col){
+function turnLeftUp(row, col) {
     let num = 0;
     let next = 0;
-    if(row !== 0){
-        next = board[row-1][col-1];
-    }else{
+    let PlaceColor = board[row][col];
+    if (row !== 0) {
+        next = board[row - 1][col - 1];
+    } else {
         return num;
     }
-    //console.log(next);
 
-    if(board[row][col] !== next && board[row][col] !== 0 && next !== 0){
+    if (PlaceColor !== next && next !== Empty) {
         //console.log(next);
 
-        for (let i = row-2, ii = col-2 ; i > 0,  ii > 0; i-- ,ii--) {
-            //console.log(board[i][ii]);
-           if(board[i][ii] === 0){
-               break;
-           }else if(board[i][ii] === board[row][col]){
-               for(let j = row-1, jj = col-1;j>i-1, jj>ii-1;j--, jj--){
-                   board[j][jj] = board[row][col];
-                   console.log("turn left up");
-                   num++;
-                   
-               }
-           }else{
+        for (let i = row - 2, ii = col - 2; i >= 0, ii >= 0; i--, ii--) {
+            //console.log(i+" and " +ii);
+            if (board[i][ii] === Empty) {
+                break;
+            }
+            if (board[i][ii] === PlaceColor) {
+                for (let j = row - 1, jj = col - 1; j > i - 1, jj > ii - 1; j--, jj--) {
+                    board[j][jj] = PlaceColor;
+                    console.log("turn left up");
+                    num++;
 
-           }
+                }
+                break;
+            }
         }
     }
     return num;
 }
 
-function turnLeftDown(row,col){
+function turnLeftDown(row, col) {
     let num = 0;
     let next = 0;
-    if(row !== board.length-1){
-        next = board[row+1][col-1];
-    }else{
+    if (row !== board.length - 1 && row !== board.length - 2) {
+        next = board[row + 1][col - 1];
+    } else {
         return num;
     }
     //console.log(next);
 
-    if(board[row][col] !== next && board[row][col] !== 0 && next !== 0){
+    if (board[row][col] !== next && board[row][col] !== 0 && next !== 0) {
         //console.log(next);
 
-        for (let i = row+2, ii = col-2 ; i < board.length,  ii > 0; i++ ,ii--) {
+        for (let i = row + 2, ii = col - 2; i < board.length, ii > 0; i++, ii--) {
             console.log(board[i][ii]);
-           if(board[i][ii] === 0){
-               break;
-           }else if(board[i][ii] === board[row][col]){
-               for(let j = row+1, jj = col-1;j<i+1, jj>ii-1;j++, jj--){
-                   board[j][jj] = board[row][col];
-                   console.log("turn left down");
-                   num++;
-                   
-               }
-           }else{
+            if (board[i][ii] === 0) {
+                break;
+            }
+            if (board[i][ii] === board[row][col]) {
+                for (let j = row + 1, jj = col - 1; j < i + 1, jj > ii - 1; j++, jj--) {
+                    board[j][jj] = board[row][col];
+                    console.log("turn left down");
+                    num++;
 
-           }
+                }
+                break;
+            }
         }
     }
     return num;
 }
 
-function turnRightUp(row,col){
+function turnRightUp(row, col) {
     let num = 0;
     let next = 0;
-    if(row !== 0){
-        next = board[row-1][col+1];
-    }else{
+    let top = 0;
+    let PlaceColor = board[row][col];
+    if (row !== top) {
+        next = board[row - 1][col + 1];
+    } else {
         return num;
     }
-    
+
     //console.log(next);
 
-    if(board[row][col] !== next && board[row][col] !== 0 && next !== 0){
+    if (PlaceColor !== next && next !== Empty) {
         //console.log(next);
 
-        for (let i = row-2, ii = col+2 ; ii < board.length,  i > 0; ii++ ,i--) {
+        for (let i = row - 2, ii = col + 2; ii < board.length, i >= 0; ii++, i--) {
             //console.log(board[i][ii]);
-           if(board[i][ii] === 0){
-               break;
-           }else if(board[i][ii] === board[row][col]){
-               for(let j = row-1, jj = col+1;jj<i+1, j>ii-1;jj++, j--){
-                   board[j][jj] = board[row][col];
-                   console.log("turn right up");
-                   num++;
-                   
-               }
-           }else{
+            if (board[i][ii] === Empty) {
+                break;
+            }
+            if (board[i][ii] === PlaceColor) {
+                for (let j = row - 1, jj = col + 1; jj < ii + 1, j > i - 1; jj++, j--) {
+                    board[j][jj] = board[row][col];
+                    console.log("turn right up");
+                    num++;
 
-           }
+                }
+                break;
+            }
         }
     }
     return num;
@@ -330,11 +335,11 @@ function turnRightUp(row,col){
 
 //Start button
 function startGame() {
-    //console.log("started");
+
     //set 0 for all elements 
     for (let i = 0; i < board.length; i++) {
         for (let j = 0; j < board[i].length; j++) {
-            board[i][j] = 0;
+            board[i][j] = Empty;
 
             //勝利判定の実験
             //board[i][j] =  1;
@@ -342,13 +347,14 @@ function startGame() {
     }
 
     //white 1, black 2
-    board[3][3] = 1;
-    board[3][4] = 2;
-    board[4][3] = 2;
-    board[4][4] = 1;
+    board[3][3] = White;
+    board[3][4] = Black;
+    board[4][3] = Black;
+    board[4][4] = White;
 
     boardSet();
 
+    //要素確認用ボードの結果をページ表示用ボードに反映
     checkTurn();
 }
 
@@ -392,25 +398,27 @@ function boardSet() {
     let white = document.getElementById("white");
 
     let total = black_counter + white_counter;
-    
+
     //黒が一つもなかったら
-    if(black_counter === 0){
+    if (black_counter === 0) {
         alert("白の勝ち！");
 
-    //白が一つもなかったら
-    }else if(white_counter === 0){
+        //白が一つもなかったら
+    } else if (white_counter === 0) {
         alert("黒の勝ち！");
 
-    //置く場所がなかったら
-    }else if(total >= 64){
+        //置く場所がなかったら
+    } else if (total >= 64) {
 
         //数が多いほうの勝ち
-        if(black_counter > white_counter){
+        if (black_counter > white_counter) {
             alert("黒の勝ち！");
-        }else{
+        } else if (black_counter === white_counter) {
+            alert("引き分け！");
+        } else {
             alert("白の勝ち！");
         }
-    }else{
+    } else {
 
     }
     black.innerHTML = black_counter;
@@ -421,5 +429,44 @@ function boardSet() {
 //Hint button
 function hint() {
     console.log("hint!");
+
+    searchSpace();
+}
+
+function searchSpace() {
+
+    let whosturn = 0;
+    if (!turn) { //白のターンなら１
+        whosturn = White;
+    } else { //黒のターンなら２
+        whosturn = Black;
+    }
+
+    
+    let possible = 0;
+    for (let i = 0; i < board.length; i++) {
+        for (let j = 0; j < board[i].length; j++) {
+
+            console.log(board[i][j]);
+            if (board[i][j] === Empty) {
+                board[i][j] = whosturn;
+
+                console.log(board[i][j]);
+                //console.log(i + " and " + j);
+                //一つ一つの要素をチェック
+                //const each = Reverse(i, j);
+                //console.log(each); 
+
+                if (each > 0) {
+                    possible++;
+                    //console.log(i + " and " + j);
+                }
+                board[i][j] = Empty;
+            }
+
+            //console.log(board);
+        }
+    }
+    alert(possible + "箇所打つことができます。");
 }
 

@@ -13,11 +13,14 @@ for (let i = 0; i < board.length; i++) {
     board[i] = new Array(8);
 }
 
+let board2 = new Array(8);
+for (let i = 0; i < board2.length; i++) {
+    board2[i] = new Array(8);
+}
 //ページ表示用ボードをhtmlのテーブルから取得
 let htmlBoard = document.querySelectorAll("#boardinfo tr");
 // const // constant immutable 
 // let // mutable 
-
 
 //クリックされた位置をScript側でその要素を取得
 for (let i = 0; i < htmlBoard.length; i++) {
@@ -26,6 +29,7 @@ for (let i = 0; i < htmlBoard.length; i++) {
 
         //特定の要素がクリックされた時の処理
         select_cell.addEventListener("click", function (e) {
+
 
             if (board[i][j] === 0) {
                 //console.log(select_cell);
@@ -43,7 +47,15 @@ for (let i = 0; i < htmlBoard.length; i++) {
                     checkTurn();
                     boardSet();
                     //console.log(board);
-                    console.log("next turn --");
+                    //console.log("next turn --");
+
+                    let canclickspace = searchSpace();
+                    if (canclickspace <= 0) {
+                        alert(" のターンはスキップされました。");
+                        turn = !turn;
+                        checkTurn();
+
+                    }
                 } else {
                     //error
                     board[i][j] = 0;
@@ -54,7 +66,6 @@ for (let i = 0; i < htmlBoard.length; i++) {
 
             }
         });
-
     }
 }
 
@@ -356,6 +367,7 @@ function startGame() {
 
     //要素確認用ボードの結果をページ表示用ボードに反映
     checkTurn();
+
 }
 
 //
@@ -376,19 +388,33 @@ function boardSet() {
     let white_counter = 0;
     for (let i = 0; i < board.length; i++) {
         for (let j = 0; j < board[i].length; j++) {
+            let BoardCellInfo = htmlBoard[i].cells[j];
+            let CellDiv = BoardCellInfo.getElementsByTagName('div');
+            //let CellDiv = BoardCellInfo.querySelectorAll("div"); //この文がdivタグを
+     
+            //BoardCellInfo.className = "white_circle";
+            //console.log(BoardCellInfo);  
             switch (board[i][j]) {
-                case 1:
-                    //console.log('white');
-                    htmlBoard[i].cells[j].innerText = "○"
+                case White:
+                    //htmlBoard[i].cells[j].innerText = "○"
+                    CellDiv.className = "white_circle";
+                    //BoardCellInfo.appendChild(CellDiv); 
+                    console.log(CellDiv);  
+                    console.log(htmlBoard[i].cells[j]);
                     white_counter++;
                     break;
-                case 2:
-                    //console.log('black');
-                    htmlBoard[i].cells[j].innerText = "●"
+                case Black:
+                    //htmlBoard[i].cells[j].innerText = "●"
+                    CellDiv.className = "black_circle";
+                    //BoardCellInfo.appendChild(CellDiv); 
+                    console.log(CellDiv); 
+                    console.log(htmlBoard[i].cells[j]); 
+                    //add.appendChild(divElement); 
                     black_counter++;
                     break;
-                case 0:
-                    htmlBoard[i].cells[j].innerText = ""
+                case Empty:
+                    //addedDiv.className = ""
+                    //htmlBoard[i].cells[j].innerText = ""
                     break;
             }
         }
@@ -430,7 +456,8 @@ function boardSet() {
 function hint() {
     console.log("hint!");
 
-    searchSpace();
+    let space = searchSpace();
+    alert(space + "箇所打つことができます。");
 }
 
 function searchSpace() {
@@ -442,31 +469,37 @@ function searchSpace() {
         whosturn = Black;
     }
 
-    
+    //ボードをコピー
+    for (let i = 0; i < board.length; i++) {
+        for (let j = 0; j < board[i].length; j++) {
+            board2[i][j] = board[i][j];
+        }
+    }
+
     let possible = 0;
     for (let i = 0; i < board.length; i++) {
         for (let j = 0; j < board[i].length; j++) {
 
-            console.log(board[i][j]);
             if (board[i][j] === Empty) {
                 board[i][j] = whosturn;
 
-                console.log(board[i][j]);
-                //console.log(i + " and " + j);
                 //一つ一つの要素をチェック
-                //const each = Reverse(i, j);
-                //console.log(each); 
+                const each = Reverse(i, j);
 
                 if (each > 0) {
                     possible++;
-                    //console.log(i + " and " + j);
+                    console.log(i + " and " + j);
                 }
-                board[i][j] = Empty;
+                //最初のデータにリセット
+                for (let i = 0; i < board2.length; i++) {
+                    for (let j = 0; j < board2[i].length; j++) {
+                        board[i][j] = board2[i][j];
+                    }
+                }
             }
-
             //console.log(board);
         }
     }
-    alert(possible + "箇所打つことができます。");
+    return possible;
 }
 

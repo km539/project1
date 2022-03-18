@@ -38,7 +38,17 @@ for (let i = 0; i < htmlBoard.length; i++) {
                 } else {
                     board[i][j] = Black;
                 }
+                const count1 = checkReverse(i, j, 0, 1)
+                +checkReverse(i, j, 0, -1)
+                +checkReverse(i, j, 1, 0)
+                +checkReverse(i, j, -1, 0)
+                +checkReverse(i, j, -1, 1)
+                +checkReverse(i, j, -1, -1)
+                +checkReverse(i, j, 1, -1)
+                +checkReverse(i, j, 1, 1);
+                console.log(count1);
                 const count = Reverse(i, j);
+
                 //要素情報と一緒にReverse()を実行
 
                 //周りにひっくりかえせる石があったら
@@ -49,9 +59,9 @@ for (let i = 0; i < htmlBoard.length; i++) {
                     //console.log(board);
                     //console.log("next turn --");
 
-                    let canclickspace = searchSpace();
-                    if (canclickspace <= 0) {
-                        alert(" のターンはスキップされました。");
+                    let checkspace = searchSpace();
+                    if (checkspace <= 0) {
+                        alert(turns + " のターンはスキップされました。");
                         turn = !turn;
                         checkTurn();
 
@@ -71,10 +81,6 @@ for (let i = 0; i < htmlBoard.length; i++) {
 
 function Reverse(i, j) {
     let counter = 0;
-    //console.log(counter);
-
-    //let target = board[i][j];
-    //console.log(target);
 
     //周りを確認する
     //console.log(counter);
@@ -98,6 +104,44 @@ function Reverse(i, j) {
 
     return counter;
 }
+function checkReverse(i, j, directionx, directiony) {
+    /* Exm (3,2)
+       Left [0, -1] (3,1) -> (3,0)
+       Right [0 ,1] (3,3) -> (3,4) -> (3,5) -> (3,6) -> (3,7)
+       Up [-1, 0] (2,2) -> (1,2) -> (0,2) 
+       Down [1, 0] (4,2) -> (5,2) -> (6,2) -> (7,2)
+
+       Right Up -1, 1 (2,3) -> (1,4) -> (0,5)
+       Left Up -1, -1 (2,1) -> (1,0) 
+       Left Down 1, -1 (4,1) -> (5,0) 
+       Right Down 1, 1 (4,3) -> (5,4) -> (6,5) -> (7,6) 
+    */
+    let number = 0;
+    let PlaceColor = board[i][j];
+    let row = i + directionx;
+    let column = j + directiony;
+    let NextPlaceColor = board[row][column];
+
+    if (NextPlaceColor !== Empty && NextPlaceColor !== PlaceColor) {
+        console.log("Start:");
+        while ((row >= 0 && row < 8) && (column >= 0 && column < 8)) {
+            // 移動先のセルに石がなかったら抜ける
+            if (board[row][column] === Empty) {
+                break;
+            }
+            if (board[row][column] === PlaceColor) {
+                number++;
+            }
+
+            console.log("row : " + row + " column : " + column);
+            row = row + directionx;
+            column = column + directiony;
+        }
+        console.log("End:");
+    }
+    return number;
+}
+
 function turnUp(row, col) {
     let num = 0;
     let NextElement = 0;
@@ -388,33 +432,19 @@ function boardSet() {
     let white_counter = 0;
     for (let i = 0; i < board.length; i++) {
         for (let j = 0; j < board[i].length; j++) {
+
             let BoardCellInfo = htmlBoard[i].cells[j];
-            let CellDiv = BoardCellInfo.getElementsByTagName('div');
-            //let CellDiv = BoardCellInfo.querySelectorAll("div"); //この文がdivタグを
-     
-            //BoardCellInfo.className = "white_circle";
-            //console.log(BoardCellInfo);  
+            let CellDiv = BoardCellInfo.querySelector("div");
             switch (board[i][j]) {
                 case White:
-                    //htmlBoard[i].cells[j].innerText = "○"
                     CellDiv.className = "white_circle";
-                    //BoardCellInfo.appendChild(CellDiv); 
-                    console.log(CellDiv);  
-                    console.log(htmlBoard[i].cells[j]);
                     white_counter++;
                     break;
                 case Black:
-                    //htmlBoard[i].cells[j].innerText = "●"
                     CellDiv.className = "black_circle";
-                    //BoardCellInfo.appendChild(CellDiv); 
-                    console.log(CellDiv); 
-                    console.log(htmlBoard[i].cells[j]); 
-                    //add.appendChild(divElement); 
                     black_counter++;
                     break;
                 case Empty:
-                    //addedDiv.className = ""
-                    //htmlBoard[i].cells[j].innerText = ""
                     break;
             }
         }
@@ -454,7 +484,7 @@ function boardSet() {
 }
 //Hint button
 function hint() {
-    console.log("hint!");
+    //console.log("hint!");
 
     let space = searchSpace();
     alert(space + "箇所打つことができます。");
@@ -488,7 +518,7 @@ function searchSpace() {
 
                 if (each > 0) {
                     possible++;
-                    console.log(i + " and " + j);
+                    //console.log(i + " and " + j);
                 }
                 //最初のデータにリセット
                 for (let i = 0; i < board2.length; i++) {
